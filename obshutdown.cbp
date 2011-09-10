@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="obshutdown" />
+		<Option platforms="Unix;Mac;" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="debug">
+				<Option platforms="Unix;" />
+				<Option output="src/debug/obshutdown" prefix_auto="1" extension_auto="1" />
+				<Option object_output="src/debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Option parameters="-v" />
+				<Compiler>
+					<Add option="-Wall" />
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="release">
+				<Option platforms="Unix;" />
+				<Option output="src/obshutdown" prefix_auto="1" extension_auto="1" />
+				<Option object_output="src/" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="`pkg-config gtk+-2.0 --cflags`" />
+		</Compiler>
+		<Linker>
+			<Add option="`pkg-config gtk+-2.0 --libs`" />
+			<Add option="`pkg-config cairo --libs`" />
+		</Linker>
+		<Unit filename="src/actions.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/actions.h" />
+		<Unit filename="src/callbacks.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/callbacks.h" />
+		<Unit filename="src/main.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/main.h" />
+		<Unit filename="src/messages.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/messages.h" />
+		<Unit filename="src/misc.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/misc.h" />
+		<Unit filename="src/parsers.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/parsers.h" />
+		<Unit filename="src/types.h" />
+		<Unit filename="src/varibles.h" />
+		<Extensions>
+			<envvars />
+			<code_completion />
+			<debugger />
+			<lib_finder disable_auto="1" />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

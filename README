@@ -1,0 +1,126 @@
+
+    Opedbox shutdown dialog
+
+    - GTK/Cairo based shutdown box styled for Openbox and others window managers
+
+    Copyright (C) panjandrum 2011 <panjandrum@gmail.com>
+
+    Originally based on Python code:
+       oblogout by Andrew Williams <andy@tensixtyone.com>
+
+    This program is free software: you can redistribute it and/or modify it
+    under the terms of the GNU General Public License as published by the
+    Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+    
+    This program is distributed in the hope that it will be useful, but
+    WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+    See the GNU General Public License for more details.
+    
+    You should have received a copy of the GNU General Public License along
+    with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+
+******************************
+
+  INSTALL:
+
+  - Requirements, to compile the source code:
+    - GTK+ 2.0  <http://www.gtk.org>
+    - Cairo     <http://cairographics.org/>
+
+  - Compilation: 
+    - In shell:
+      $ ./configure
+      $ make
+      # make install
+
+  - Now you can customise your config file (~/obshutdown.rc). An example file is located in share/obshutdown/example.rc.
+
+******************************
+
+  UNINSTALL:
+
+  - In shell:
+    # make uninstall
+
+
+******************************
+
+  RUN:
+
+  - Run via the 'obshutdown' command
+
+  - Use -h parameter to print usage
+
+
+******************************
+
+  CONFIGURATION OPTIONS:
+
+  You can use an example configuration file from share/obshutdown/example.rc.
+
+  GENERAL
+
+  - version        - Minimal version of obshutdown, that is required
+  - verbose        - Verbose mode (true, false)
+  - default_action - Default selected action (all from ACTIONS)
+  - composite      - Compositing (true, false)
+  - theme          - Theme name (e.g. foom - rc file is located then in share/obshutdown/themes/foom.rc)
+  - buttons        - List and order of the buttons (e.g. cancel logout restart shutdown)
+
+  ACTIONS
+
+  - cancel         - Cancel / Close
+  - restart        - Restart computer
+  - shutdown       - Shutdown computer
+  - suspend        - Suspend
+  - hibernate      - Hibernate
+  - lock           - Lock session
+  - switch         - Switch user
+  - custom         - Custom command
+
+  SHORTCUTS
+
+  - For the each action, defines a shortcut.
+
+  LABELS
+
+  - Same as the SHORTCUTS, but defines a button label.
+
+******************************
+
+  THEME OPTIONS:
+
+  GENERAL
+
+  - name                    - Theme full name
+  - author                  - Theme author
+  - version                 - Theme version
+  - version_req             - Version of obshutdown, that is required
+
+  WINDOW
+
+  - decoration              - Window decoration (true, false)
+  - size                    - Window size (fullscreen, custom)
+  - size.width              - Window width, if size=custom
+  - size.heigh              - Window hight, if size=custom
+  - position                - Window position (center, custom)
+  - position.x              - Left X position, if position=custom and size=custom
+  - position.y              - Top Y position, if position=custom and size=custom
+  - background              - Background style (color, image, image_repeat)
+  - background.transparency - Background transparency, if background=color (true, false)
+  - background.file         - Background image file, if background=image or background=image_repeat (absolute, or relative path to .png file)
+  - background.colour       - Background color (html style, e.g. black or #EF080F)
+  - background.alpha        - Background alpha chanel value, if background.transparency=true (floating number: 0.0-1.0)
+
+  BUTTONS
+
+  - relief                  - Buttons relief style (none, normal)
+  - spacing                 - Buttons spacing (in pixels)
+  - images		    - Images on buttons (true, false)
+  - images.directory        - Images directorym if images=true (absolute, or relative path)
+  - labels                  - Visibility of labels (true, false)
+  - labels.style            - Labels font style, if labels=true. Use "Pango Text Attribute Markup Language" (e.g. <span size=\"large\" weight=\"bold\" fgcolor=\"white\">%s</span>)
+

@@ -1,0 +1,22 @@
+0.1-rc1:
+  - Adding SIGINT handler in timeout function (--wait) for Ctrl+C break.
+  - Now you can place your themes in ~/.themes/obshutdown/
+  - Few other small improvements.
+  - Code cleaning.
+
+0.1-beta2:
+  - Theme configuration support (see the README file)
+  - Rc options (transparency and transparent) now set for each theme separately (see the README file).
+  - Rewriting parsing functions.
+  - Code cleaning.
+
+0.1-beta1:
+  - New GTK dialog box for error messages.
+  - Few new error and warning messages.
+  - Now obshutdown can run only once.
+  - New commandline option --wait (-w), that setting timeout (in minutes), before running action specified by --run (-r).
+  - Code cleaning
+
+0.1-alpha2:
+  - Some code fixing and cleaning.
+  - Makefile improvement.
