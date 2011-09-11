@@ -1,3 +1,5 @@
+# obshutdown
+
 AC_PREREQ([2.54])
 AC_INIT([obshutdown], [0.1-rc1], [panjandrummail@gmail.com])
 AM_INIT_AUTOMAKE([obshutdown], [0.1-rc1])

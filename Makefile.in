@@ -15,7 +15,7 @@
 
 @SET_MAKE@
 
-# SUBDIRS = po
+# obshutdown
 
 
 VPATH = @srcdir@
@@ -204,7 +204,6 @@ top_srcdir = @top_srcdir@
 maindir = $(datadir)/obshutdown
 themesdir = $(DESTDIR)$(datadir)/obshutdown/themes
 AUTOMAKE_OPTIONS = subdir-objects foreign
-ACLOCAL_AMFLAGS = -I m4
 src_obshutdown_CPPFLAGS = \
 	$(GTK_CFLAGS) \
 	$(CAIRO_CFLAGS) \

@@ -1,11 +1,11 @@
-# SUBDIRS = po
+# obshutdown
 
 localedir       = $(datadir)/locale
 maindir       = $(datadir)/obshutdown
 themesdir        = $(DESTDIR)$(datadir)/obshutdown/themes
 
 AUTOMAKE_OPTIONS = subdir-objects foreign
-ACLOCAL_AMFLAGS = -I m4
+# ACLOCAL_AMFLAGS = -I m4
 
 bin_PROGRAMS = \
 	src/obshutdown
