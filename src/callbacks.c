@@ -65,6 +65,13 @@ gboolean onWindowStateChange(GtkWidget *widget, GdkEventWindowState *event, gpoi
 	return FALSE;
 }
 
+void onWindowShow(GtkWidget *widget, gpointer data)
+{
+	while (gdk_keyboard_grab(widget->window, FALSE, GDK_CURRENT_TIME) != GDK_GRAB_SUCCESS) {
+        sleep(0.1);
+    }
+}
+
 void onButtonClick(GtkWidget *widget, gpointer data)
 {
 	Action action = (Action) data;

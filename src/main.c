@@ -230,6 +230,7 @@ void initWidgets(void)
 	gtk_window_set_decorated(GTK_WINDOW(winWidget), myTheme.win_decor);
 	gtk_window_set_skip_taskbar_hint(GTK_WINDOW(winWidget), TRUE);
 	gtk_window_set_skip_pager_hint(GTK_WINDOW(winWidget), TRUE);
+	GTK_WIDGET_SET_FLAGS(winWidget, GTK_CAN_FOCUS);
 
 	gtk_widget_set_app_paintable(winWidget, TRUE);
 	if (myTheme.win_pos == T_WIN_POS_CENTER) /* Window position - center */
@@ -247,6 +248,7 @@ void initWidgets(void)
 	g_signal_connect(winWidget, "destroy", G_CALLBACK(onDestroy), NULL);
 	g_signal_connect(winWidget, "key_press_event", G_CALLBACK(onKeyPress), NULL);
 	g_signal_connect(winWidget, "window_state_event", G_CALLBACK(onWindowStateChange), NULL);
+	g_signal_connect(winWidget, "show", G_CALLBACK(onWindowShow), NULL);
 
 	if (myOptions.composite) {
 		if (gtk_widget_is_composited(winWidget)) {

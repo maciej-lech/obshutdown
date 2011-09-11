@@ -26,6 +26,7 @@
 void onDestroy(GtkWidget*, gpointer);
 gboolean onKeyPress(GtkWidget*, GdkEvent*, gpointer);
 gboolean onWindowStateChange(GtkWidget*, GdkEventWindowState*, gpointer);
+void onWindowShow(GtkWidget*, gpointer);
 void onButtonClick(GtkWidget*, gpointer);
 void onScreenChanged(GtkWidget*, GdkScreen*, gpointer);
 gboolean onExpose(GtkWidget*, GdkEventExpose*);
