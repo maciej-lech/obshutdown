@@ -10,16 +10,16 @@ verbose =        false
 default_action = shutdown
 composite =      true
 theme =          foom
-buttons =        cancel logout shutdown restart
+buttons =        cancel logout shutdown restart suspend hibernate
 
 [actions]
 logout =         openbox --exit
-shutdown =       dbus-send --print-reply --system --dest=org.freedesktop.Hal /org/freedesktop/Hal/devices/computer org.freedesktop.Hal.Device.SystemPowerManagement.Shutdown
-restart =        dbus-send --print-reply --system --dest=org.freedesktop.Hal /org/freedesktop/Hal/devices/computer org.freedesktop.Hal.Device.SystemPowerManagement.Reboot
+shutdown =       dbus-send --system --print-reply --dest="org.freedesktop.ConsoleKit" /org/freedesktop/ConsoleKit/Manager org.freedesktop.ConsoleKit.Manager.Stop
+restart =        dbus-send --system --print-reply --dest="org.freedesktop.ConsoleKit" /org/freedesktop/ConsoleKit/Manager org.freedesktop.ConsoleKit.Manager.Restart
 lock = 
 switch = 
-suspend = 
-hibernate = 
+suspend =        dbus-send --system --print-reply --dest="org.freedesktop.UPower" /org/freedesktop/UPower org.freedesktop.UPower.Suspend
+hibernate =      dbus-send --system --print-reply --dest="org.freedesktop.UPower" /org/freedesktop/UPower org.freedesktop.UPower.Hibernate
 custom = 
 
 [shortcuts]
@@ -28,8 +28,8 @@ shutdown =       s
 restart =        r
 lock = 
 switch = 
-suspend = 
-hibernate = 
+suspend =        u
+hibernate =      h
 custom = 
 
 [labels]
