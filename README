@@ -3,7 +3,7 @@
 
     - GTK/Cairo based shutdown box styled for Openbox and others windows managers
 
-    Copyright (C) panjandrum 2011 <panjandrum@gmail.com>
+    Copyright (C) panjandrum 2011 <panjandrummail@gmail.com>
 
     Originally based on Python code:
        oblogout by Andrew Williams <andy@tensixtyone.com>
