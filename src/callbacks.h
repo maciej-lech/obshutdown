@@ -21,7 +21,7 @@
 #ifndef _CALLBACKS_H_
 #define _CALLBACKS_H_
 
-#include <glib/gtypes.h>
+#include <glib.h>
 
 void onDestroy(GtkWidget*, gpointer);
 gboolean onKeyPress(GtkWidget*, GdkEvent*, gpointer);

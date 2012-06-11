@@ -21,7 +21,7 @@
 #ifndef _PARSERS_H_
 #define _PARSERS_H_
 
-#include <glib/gtypes.h>
+#include <glib.h>
 
 gboolean openRcFile(GKeyFile**, const gchar*);
 inline void closeRcFile(GKeyFile**);
