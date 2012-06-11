@@ -21,7 +21,7 @@
 #ifndef _MAIN_H_
 #define _MAIN_H_
 
-#include <glib/gtypes.h>
+#include <glib.h>
 
 #include "types.h"
 
