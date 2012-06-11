@@ -21,7 +21,7 @@
 #ifndef _MISC_H_
 #define _MISC_H_
 
-#include <glib/gtypes.h>
+#include <glib.h>
 
 #include "types.h"
 

@@ -21,7 +21,7 @@
 #ifndef _MESSAGES_H_
 #define _MESSAGES_H_
 
-#include <glib/gtypes.h>
+#include <glib.h>
 
 
 //#define DEBUG
