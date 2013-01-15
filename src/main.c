@@ -20,6 +20,8 @@
 
 #include <stdlib.h>
 #include <gtk/gtk.h>
+#include <glib.h>
+#include <glib/gstdio.h>
 
 #include "main.h"
 #include "callbacks.h"
@@ -35,6 +37,8 @@ int main(int argc, char **argv)
 
 	initGtk(&argc, &argv);
 
+	migrateConfigToXdgDir();
+	migrateThemesToXdgDir();
 	initDataDefault();
 
 	if (parseCommandline(&argc, &argv)) {
@@ -101,6 +105,136 @@ inline void deleteLockFile(void)
 	}
 
 	g_object_unref(myLockFile);
+}
+
+void migrateConfigToXdgDir(void)
+{
+	gchar *oldFilename, *newFilename, *xdgPath;
+	GFile *oldFile, *newFile;
+
+
+	xdgPath = g_build_filename(g_get_user_config_dir(), OBS_NAME, NULL);
+	if (g_file_test(xdgPath, G_FILE_TEST_EXISTS | G_FILE_TEST_IS_DIR)) {
+		g_free(xdgPath);
+		return;
+	}
+
+	oldFilename = g_build_filename(g_get_home_dir(), ".obshutdown.rc", NULL);
+       	if (!g_file_test(oldFilename, G_FILE_TEST_EXISTS)) {
+		g_free(xdgPath);
+		g_free(oldFilename);
+		return;
+	}
+
+	if (g_mkdir_with_parents(xdgPath, (S_IRUSR | S_IWUSR | S_IXUSR)) == -1) {
+		printMessage(MSG_WARN,"Failed to create %s\n", xdgPath);
+		g_free(xdgPath);
+		g_free(oldFilename);
+		return;
+	}
+
+	newFilename = g_build_filename(xdgPath, "obshutdown.rc", NULL);
+	oldFile = g_file_new_for_path(oldFilename);
+	newFile = g_file_new_for_path(newFilename);
+	if (!g_file_move(oldFile, newFile, G_FILE_COPY_NONE, NULL, NULL, NULL, NULL)) {
+		printMessage(MSG_WARN,"Failed to migrate configuration file\n");
+	}
+	g_free(xdgPath);
+	g_free(oldFilename);
+	g_free(newFilename);
+	g_object_unref(oldFile);
+	g_object_unref(newFile);
+}
+
+void migrateThemesToXdgDir(void)
+{
+	gchar *oldPath, *xdgPath;	
+
+	xdgPath = g_build_filename(g_get_user_data_dir(), OBS_NAME, "themes", NULL);
+	if (g_file_test(xdgPath, G_FILE_TEST_EXISTS | G_FILE_TEST_IS_DIR)) {
+		g_free(xdgPath);
+		return;
+	}
+
+	oldPath = g_build_filename(g_get_home_dir(), ".themes", OBS_NAME, NULL);
+	if (!g_file_test(oldPath, G_FILE_TEST_EXISTS | G_FILE_TEST_IS_DIR)) {
+		g_free(xdgPath);
+		g_free(oldPath);
+		return;
+	}
+
+	if( g_mkdir_with_parents(xdgPath, (S_IRUSR | S_IWUSR | S_IXUSR)) == -1) {
+		printMessage(MSG_WARN,"Failed to create %s\n", xdgPath);
+		g_free(xdgPath);
+		g_free(oldPath);
+		return;
+	}
+
+	if (!copyThemesDir("")) {
+		printMessage(MSG_WARN,"Failed to migrate themes files\n");
+		g_free(xdgPath);
+		g_free(oldPath);
+		return;
+	}
+
+	g_rmdir(oldPath);
+	g_free(xdgPath);
+	g_free(oldPath);
+}
+
+gboolean copyThemesDir(const gchar *path)
+{
+	const gchar *file;
+	gchar *fullPath, *childPath,  *oldFilename, *newFilename;
+	GDir *dir;
+	GFile *oldFile, *newFile;
+
+	fullPath = g_build_filename(g_get_home_dir(), ".themes", OBS_NAME, path, NULL);
+	dir = g_dir_open(fullPath, 0, NULL);
+	file = g_dir_read_name(dir);
+	while (file != NULL){
+		if (g_file_test(file, G_FILE_TEST_EXISTS | G_FILE_TEST_IS_DIR)) {			
+			childPath = g_build_filename(fullPath, file, NULL);
+			if (g_mkdir_with_parents(childPath, (S_IRUSR | S_IWUSR | S_IXUSR)) == -1) {
+				g_free(fullPath);
+				g_free(childPath);
+				g_dir_close(dir);
+				return FALSE;
+			}
+
+			childPath = g_build_filename(path, file, NULL);
+			if (!copyThemesDir(childPath)) {
+				g_free(fullPath);
+				g_free(childPath);
+				g_dir_close(dir);
+				return FALSE;
+			}
+			g_free(childPath);
+		}
+		else {
+			oldFilename = g_build_filename(fullPath, file, NULL);
+			oldFile = g_file_new_for_path(oldFilename);
+			newFilename = g_build_filename(g_get_user_data_dir(), OBS_NAME, "themes", path, file, NULL);
+			newFile = g_file_new_for_path(newFilename);
+			if (!g_file_move(oldFile, newFile, G_FILE_COPY_NONE, NULL, NULL, NULL, NULL)) {
+				g_free(fullPath);
+				g_dir_close(dir);
+				g_free(oldFilename);
+				g_free(newFilename);
+				g_object_unref(oldFile);
+				g_object_unref(newFile);
+				return FALSE;
+			}
+			g_free(oldFilename);
+			g_free(newFilename);
+			g_object_unref(oldFile);
+			g_object_unref(newFile);
+		}
+		file = g_dir_read_name(dir);
+	}
+	g_free(fullPath);
+	g_dir_close(dir);
+	return TRUE;
 }
 
 void initDataDefault(void)
@@ -345,4 +479,3 @@ void addButton(Action action)
 	gtk_box_pack_start(GTK_BOX(hboxButtonWidget), vboxWidget, TRUE, TRUE, 0);
 
 }
-

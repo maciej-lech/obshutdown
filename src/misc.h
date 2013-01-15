@@ -25,8 +25,6 @@
 
 #include "types.h"
 
-gchar* getPrefixDir(void);
-gchar* getHomeDir(void);
 gboolean runCommand(const gchar*);
 gchar *getRcPath(void);
 gchar *getThemeRcPath(void);
