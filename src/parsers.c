@@ -357,12 +357,13 @@ gboolean parseCommandline(int *argc, char ***argv)
 	gchar *rc_file = NULL;
 	gchar *run_action = NULL;
 	gchar *temp = NULL;
+	gchar *config_message = g_strdup_printf("Set custom rc file(default: %s/obshutdown/obshutdown.rc)", g_get_user_config_dir());
 	GError *error = NULL;
 	GOptionContext *context;
 	GOptionEntry entries[] = {
 		{"verbose", 'v', 0, G_OPTION_ARG_NONE, &myCmdOptions.verbose, "Set verbose mode", NULL},
 		{"theme", 't', 0, G_OPTION_ARG_STRING, &myCmdOptions.theme, "Set custom theme", "THEME"},
-		{"config", 'c', 0, G_OPTION_ARG_STRING, &rc_file, "Set custom rc file (default: ~/.obshutdown.rc)", "FILE"},
+		{"config", 'c', 0, G_OPTION_ARG_STRING, &rc_file, config_message, "FILE"},
 		{"run", 'r', 0, G_OPTION_ARG_STRING, &run_action, "Specifying action to run", "ACTION"},
 		{"wait", 'w', 0, G_OPTION_ARG_INT, &myCmdOptions.timeout, "Wait n minutes before executing the action from --run", "n"},
 		{NULL}
@@ -418,5 +419,6 @@ gboolean parseCommandline(int *argc, char ***argv)
 	}
 
 	g_option_context_free(context);
+	g_free(config_message);
 	return ret;
 }
