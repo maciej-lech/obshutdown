@@ -28,6 +28,9 @@
 gboolean initLockFile(void);
 inline void deleteLockFile(void);
 
+void migrateConfigToXdgDir(void);
+void migrateThemesToXdgDir(void);
+gboolean copyThemesDir(const gchar *path); 
 void initDataDefault(void);
 void freeData(void);
 

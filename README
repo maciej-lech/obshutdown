@@ -36,7 +36,7 @@
       $ make
       # make install
 
-  - Now you can customise your config file (~/obshutdown.rc). An example file is located in share/obshutdown/example.rc.
+  - Now you can customise your config file (~/.config/obshutdown/obshutdown.rc). An example file is located in share/obshutdown/example.rc.
 
 ******************************
 

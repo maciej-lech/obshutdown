@@ -9,6 +9,7 @@
  * Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
+ *
  * This program is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
@@ -26,37 +27,6 @@
 #include "actions.h"
 #include "messages.h"
 
-gchar* getPrefixDir(void)
-{
-	gchar *prefix = NULL;
-	gchar *filename = NULL;
-	gchar *temp = NULL;
-
-	filename = g_file_read_link("/proc/self/exe", NULL);
-	if (filename) {
-		temp = g_path_get_dirname(filename);
-		prefix = g_path_get_dirname(temp);
-		g_free(filename);
-		g_free(temp);
-	} else
-		printMessage(MSG_ERR, "Locating prefix directory failed!\n");
-
-	return prefix;
-}
-
-gchar* getHomeDir(void)
-{
-	gchar *home = NULL;
-	const gchar *temp = g_getenv("HOME");
-	if (!temp)
-		temp = g_get_home_dir();
-	if (temp)
-		home = g_strdup(temp);
-	if (!home)
-		printMessage(MSG_ERR, "Locating home directory failed!\n");
-	return home;
-}
-
 gboolean runCommand(const gchar *cmd)
 {
 	gboolean ret = TRUE;
@@ -73,55 +43,43 @@ gboolean runCommand(const gchar *cmd)
 gchar *getRcPath(void)
 {
 	gchar *path = NULL;
-	gchar *home = getHomeDir();
 
-	if (home) {
-		/*path = g_strdup_printf("%s/.obshutdown.rc", home);*/
-		path = g_build_filename(home, ".obshutdown.rc", NULL);
-		g_free(home);
-		if (g_file_test(path, G_FILE_TEST_EXISTS) != FALSE) {
-			return path;
-		}
-		else {
-			printMessage(MSG_WARN, "Configuration file not found, using default configuration.\n");
-			g_free(path);
-		}
+	path = g_build_filename(g_get_user_config_dir(), OBS_NAME, "obshutdown.rc", NULL);
+	if (g_file_test(path, G_FILE_TEST_EXISTS)) {
+		return path;
 	}
+	else {
+		printMessage(MSG_WARN, "Configuration file not found, using default configuration.\n");
+		g_free(path);
+	}
+
 	return NULL;
 }
 
 gchar *getThemeRcPath(void)
 {
-	gchar *path1 = NULL;
-	gchar *path2 = NULL;
-	gchar *home = NULL;
-	gchar *prefix = NULL;
+	const gchar * const *system_data_dirs = g_get_system_data_dirs();
+	gchar *path = NULL;
+	gchar *filename = g_strdup_printf("%s.rc", myOptions.theme);
+	gint i=0;
 
-	home = getHomeDir();
-	if (home) {
-		path1 = g_strdup_printf("%s/.themes/obshutdown/%s.rc", home, myOptions.theme);
-		g_free(home);
-		if (g_file_test(path1, G_FILE_TEST_EXISTS) != FALSE)
-			return path1;
+	path = g_build_filename(g_get_user_data_dir(), OBS_NAME, "themes", filename, NULL);
+	if (g_file_test(path, G_FILE_TEST_EXISTS)) {
+		return path;
+	}
+	else {
+		printMessage(MSG_WARN, "Theme configuration file not found: \"%s\"\n", path);
+		g_free(path);
 	}
 
-	prefix = getPrefixDir();
-	if (prefix) {
-		path2 = g_strdup_printf("%s/share/obshutdown/themes/%s.rc", prefix, myOptions.theme);
-		/*path = g_build_filename(prefix, "share", "themes", myOptions.theme, "obshutdown", myOptions.theme);*/
-		g_free(prefix);
-		if (g_file_test(path2, G_FILE_TEST_EXISTS) != FALSE) {
-			if (path1)
-				g_free(path1);
-			return path2;
+	for (i = 0; system_data_dirs[i]; i++) {
+		path = g_build_filename(system_data_dirs[i], OBS_NAME, "themes", filename, NULL);
+		if (g_file_test(path, G_FILE_TEST_EXISTS)) {
+			return path;
 		}
 		else {
-			if (path1) {
-				printMessage(MSG_WARN, "Theme configuration file not found: \"%s\"\n", path1);
-				g_free(path1);
-			}
-			printMessage(MSG_WARN, "Theme configuration file not found: \"%s\"\n", path2);
-			g_free(path2);
+			printMessage(MSG_WARN, "Theme configuration file not found: \"%s\"\n", path);
+			g_free(path);
 		}
 	}
 
